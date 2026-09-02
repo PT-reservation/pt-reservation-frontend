@@ -1,6 +1,7 @@
 'use client';
 
 import { useClass } from '@/hooks/useClasses';
+import { useClassEvents } from '@/hooks/useClassEvents';
 import {
   useMyReservations,
   useReserve,
@@ -17,6 +18,8 @@ export function ClassDetailView({ classId }: { classId: number }) {
 
   const reserve = useReserve(classId);
   const cancelReservation = useCancelReservation();
+
+  useClassEvents(classId);
 
   if (isLoading) {
     return (
