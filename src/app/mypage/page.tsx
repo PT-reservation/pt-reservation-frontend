@@ -24,13 +24,21 @@ const statusColor: Record<string, string> = {
 };
 
 export default function MyPage() {
-  const { email, role } = useCurrentUser();
+  const { isLoggedIn, email, role } = useCurrentUser();
   const { data: reservations } = useMyReservations();
   const ticket = useMyTicket();
   const chargeTicket = useChargeTicket();
   const cancelReservation = useCancelReservation();
 
   const [chargeCount, setChargeCount] = useState('10');
+
+  if (!isLoggedIn) {
+    return (
+      <main className="flex flex-1 items-center justify-center">
+        <p className="text-muted">로그인 후 이용할 수 있습니다.</p>
+      </main>
+    );
+  }
 
   const handleCharge = (e: React.FormEvent) => {
     e.preventDefault();
