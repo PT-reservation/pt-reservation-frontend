@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
 import { setToken } from '@/lib/auth';
 import { LoginResponse, Role } from '@/types/api';
+import { useCurrentUser } from '@/lib/auth-context';
 
 interface SignupInput {
   email: string;
@@ -26,6 +27,8 @@ export function useSignup() {
 }
 
 export function useLogin() {
+  const { login } = useCurrentUser();
+
   return useMutation({
     mutationFn: (input: LoginInput) =>
       apiFetch<LoginResponse>('/auth/login', {
@@ -33,7 +36,7 @@ export function useLogin() {
         body: JSON.stringify(input),
       }),
     onSuccess: (data) => {
-      setToken(data.token);
+      login(data.token);
     },
   });
 }
