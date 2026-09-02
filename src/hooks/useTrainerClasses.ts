@@ -1,0 +1,61 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiFetch } from '@/lib/api';
+import { FitnessClass } from '@/types/api';
+
+interface ClassInput {
+  title: string;
+  classDateTime: string;
+  capacity: number;
+}
+
+export function useMyClasses() {
+  return useQuery({
+    queryKey: ['trainerClasses'],
+    queryFn: () => apiFetch<FitnessClass[]>('/trainers/me/classes'),
+  });
+}
+
+export function useCreateClass() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: ClassInput) =>
+      apiFetch<FitnessClass>('/trainers/me/classes', {
+        method: 'POST',
+        body: JSON.stringify(input),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['trainerClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['classes'] });
+    },
+  });
+}
+
+export function useUpdateClass(classId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: ClassInput) =>
+      apiFetch<FitnessClass>(`/trainers/me/classes/${classId}`, {
+        method: 'PUT',
+        body: JSON.stringify(input),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['trainerClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['classes'] });
+    },
+  });
+}
+
+export function useDeleteClass() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (classId: number) =>
+      apiFetch<void>(`/trainers/me/classes/${classId}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['trainerClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['classes'] });
+    },
+  });
+}
