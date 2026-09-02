@@ -7,6 +7,7 @@ import {
   useState,
   ReactNode,
 } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   getToken,
   setToken as saveToken,
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null);
   const [role, setRole] = useState<Role | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const token = getToken();
@@ -47,12 +49,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setEmail(payload.sub);
       setRole(payload.role);
     }
+    queryClient.clear();
   };
 
   const logout = () => {
     clearToken();
     setEmail(null);
     setRole(null);
+    queryClient.clear();
   };
 
   return (
