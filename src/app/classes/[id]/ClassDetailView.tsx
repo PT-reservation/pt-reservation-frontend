@@ -1,9 +1,22 @@
 'use client';
 
 import { useClass } from '@/hooks/useClasses';
+import {
+  useMyReservations,
+  useReserve,
+  useCancelReservation,
+} from '@/hooks/useReservations';
+import { useCurrentUser } from '@/lib/auth-context';
+import { ApiError } from '@/lib/api';
+import { Button } from '@/components/Button';
 
 export function ClassDetailView({ classId }: { classId: number }) {
+  const { isLoggedIn, role } = useCurrentUser();
   const { data: fitnessClass, isLoading, isError } = useClass(classId);
+  const { data: myReservations } = useMyReservations();
+
+  const reserve = useReserve(classId);
+  const cancelReservation = useCancelReservation();
 
   if (isLoading) {
     return (
@@ -21,7 +34,14 @@ export function ClassDetailView({ classId }: { classId: number }) {
     );
   }
 
+  const myReservation = myReservations?.find(
+    (r) =>
+      r.classId === classId &&
+      (r.status === 'CONFIRMED' || r.status === 'WAITLISTED'),
+  );
+
   const isFull = fitnessClass.currentCount >= fitnessClass.capacity;
+  const mutationError = reserve.error || cancelReservation.error;
 
   return (
     <main className="flex flex-1 justify-center px-4 py-10">
@@ -41,12 +61,57 @@ export function ClassDetailView({ classId }: { classId: number }) {
           )}
         </p>
 
-        <button
-          disabled
-          className="mt-6 w-full rounded-md bg-brand px-4 py-2 font-medium text-white opacity-50"
-        >
-          예약하기 (다음 단계에서 연결)
-        </button>
+        {myReservation && (
+          <p className="mt-2 text-sm">
+            내 예약 상태:{' '}
+            <span
+              className={
+                myReservation.status === 'CONFIRMED'
+                  ? 'text-brand'
+                  : 'text-amber-400'
+              }
+            >
+              {myReservation.status === 'CONFIRMED' ? '확정' : '대기중'}
+            </span>
+          </p>
+        )}
+
+        {mutationError && (
+          <p className="mt-4 text-sm text-red-400">
+            {mutationError instanceof ApiError
+              ? mutationError.message
+              : '요청에 실패했습니다.'}
+          </p>
+        )}
+
+        {!isLoggedIn ? (
+          <p className="mt-6 text-sm text-muted">예약하려면 로그인해주세요.</p>
+        ) : role !== 'MEMBER' ? (
+          <p className="mt-6 text-sm text-muted">
+            회원 계정만 예약할 수 있습니다.
+          </p>
+        ) : myReservation ? (
+          <Button
+            variant="secondary"
+            onClick={() => cancelReservation.mutate(myReservation.id)}
+            disabled={cancelReservation.isPending}
+            className="mt-6 w-full"
+          >
+            {cancelReservation.isPending ? '취소 중...' : '예약 취소하기'}
+          </Button>
+        ) : (
+          <Button
+            onClick={() => reserve.mutate()}
+            disabled={reserve.isPending}
+            className="mt-6 w-full"
+          >
+            {reserve.isPending
+              ? '예약 중...'
+              : isFull
+                ? '대기 신청하기'
+                : '예약하기'}
+          </Button>
+        )}
       </div>
     </main>
   );
