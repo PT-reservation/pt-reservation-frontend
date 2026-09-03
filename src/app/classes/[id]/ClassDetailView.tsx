@@ -11,6 +11,7 @@ import { useCurrentUser } from '@/lib/auth-context';
 import { getErrorMessage } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
+import { Skeleton } from '@/components/Skeleton';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import {
   RESERVATION_STATUS_LABEL,
@@ -28,7 +29,17 @@ export function ClassDetailView({ classId }: { classId: number }) {
   useClassEvents(classId);
 
   if (isLoading) {
-    return <CenteredMessage message="불러오는 중..." />;
+    return (
+      <main className="flex flex-1 justify-center px-4 py-10">
+        <div className="w-full max-w-lg rounded-2xl bg-surface p-8 shadow-lg shadow-black/20">
+          <Skeleton className="h-7 w-2/3" />
+          <Skeleton className="mt-3 h-4 w-1/3" />
+          <Skeleton className="mt-1 h-4 w-1/2" />
+          <Skeleton className="mt-6 h-9 w-1/3" />
+          <Skeleton className="mt-6 h-11 w-full rounded-full" />
+        </div>
+      </main>
+    );
   }
 
   if (isError || !fitnessClass) {
