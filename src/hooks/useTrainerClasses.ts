@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
-import { FitnessClass } from '@/types/api';
+import { FitnessClass, ClassReservation } from '@/types/api';
 import { useCurrentUser } from '@/lib/auth-context';
 
 interface ClassInput {
@@ -63,5 +63,16 @@ export function useDeleteClass() {
       queryClient.invalidateQueries({ queryKey: ['trainerClasses'] });
       queryClient.invalidateQueries({ queryKey: ['classes'] });
     },
+  });
+}
+
+export function useClassReservations(classId: number | null) {
+  return useQuery({
+    queryKey: ['classReservations', classId],
+    queryFn: () =>
+      apiFetch<ClassReservation[]>(
+        `/trainers/me/classes/${classId}/reservations`,
+      ),
+    enabled: classId !== null,
   });
 }

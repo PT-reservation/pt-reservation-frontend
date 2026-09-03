@@ -51,3 +51,11 @@ export interface LoginResponse {
   name: string;
   role: Role;
 }
+
+export interface ClassReservation {
+  id: number;
+  memberName: string;
+  memberEmail: string;
+  status: ReservationStatus;
+  reservedAt: string;
+}
