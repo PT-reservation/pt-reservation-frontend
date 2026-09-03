@@ -7,6 +7,7 @@ import {
   useCreateClass,
   useUpdateClass,
   useDeleteClass,
+  useClassReservations,
 } from '@/hooks/useTrainerClasses';
 import { ClassForm } from '@/components/ClassForm';
 import { getErrorMessage } from '@/lib/api';
@@ -14,7 +15,11 @@ import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import { Skeleton } from '@/components/Skeleton';
-import { FitnessClass } from '@/types/api';
+import {
+  FitnessClass,
+  RESERVATION_STATUS_LABEL,
+  RESERVATION_STATUS_COLOR,
+} from '@/types/api';
 
 export default function TrainerClassesPage() {
   const { isLoggedIn, role, isInitialized } = useCurrentUser();
@@ -25,6 +30,7 @@ export default function TrainerClassesPage() {
 
   const [isCreating, setIsCreating] = useState(false);
   const [editingClass, setEditingClass] = useState<FitnessClass | null>(null);
+  const [expandedClassId, setExpandedClassId] = useState<number | null>(null);
 
   if (!isInitialized) {
     return <CenteredMessage message="불러오는 중..." />;
@@ -93,34 +99,54 @@ export default function TrainerClassesPage() {
             ) : (
               <div
                 key={fitnessClass.id}
-                className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
+                className="rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
               >
-                <div>
-                  <p className="text-foreground">{fitnessClass.title}</p>
-                  <p className="text-sm text-muted">
-                    {formatDateTime(fitnessClass.classDateTime)} ·{' '}
-                    {fitnessClass.currentCount}/{fitnessClass.capacity}명
-                  </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-foreground">{fitnessClass.title}</p>
+                    <p className="text-sm text-muted">
+                      {formatDateTime(fitnessClass.classDateTime)} ·{' '}
+                      {fitnessClass.currentCount}/{fitnessClass.capacity}명
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      onClick={() =>
+                        setExpandedClassId(
+                          expandedClassId === fitnessClass.id
+                            ? null
+                            : fitnessClass.id,
+                        )
+                      }
+                    >
+                      {expandedClassId === fitnessClass.id
+                        ? '예약자 닫기'
+                        : '예약자 보기'}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setEditingClass(fitnessClass)}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        if (confirm('정말 삭제하시겠어요?')) {
+                          deleteClass.mutate(fitnessClass.id);
+                        }
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setEditingClass(fitnessClass)}
-                  >
-                    수정
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      if (confirm('정말 삭제하시겠어요?')) {
-                        deleteClass.mutate(fitnessClass.id);
-                      }
-                    }}
-                  >
-                    삭제
-                  </Button>
-                </div>
+                {expandedClassId === fitnessClass.id && (
+                  <ReserveeList classId={fitnessClass.id} />
+                )}
               </div>
             ),
           )}
@@ -131,6 +157,38 @@ export default function TrainerClassesPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+function ReserveeList({ classId }: { classId: number }) {
+  const { data: reservations, isLoading } = useClassReservations(classId);
+
+  if (isLoading) {
+    return <Skeleton className="mt-3 h-16 w-full" />;
+  }
+
+  if (!reservations || reservations.length === 0) {
+    return (
+      <p className="mt-3 border-t border-border pt-3 text-sm text-muted">
+        아직 예약자가 없습니다.
+      </p>
+    );
+  }
+
+  return (
+    <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+      {reservations.map((reservation) => (
+        <div
+          key={reservation.id}
+          className="flex items-center justify-between text-sm"
+        >
+          <span className="text-foreground">{reservation.memberName}</span>
+          <span className={RESERVATION_STATUS_COLOR[reservation.status]}>
+            {RESERVATION_STATUS_LABEL[reservation.status]}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }
 
