@@ -2,23 +2,21 @@
 
 import Link from 'next/link';
 import { useClasses } from '@/hooks/useClasses';
+import { CenteredMessage } from '@/components/CenteredMessage';
 
 export default function Home() {
   const { data: classes, isLoading, isError } = useClasses();
 
   if (isLoading) {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">불러오는 중...</p>
-      </main>
-    );
+    return <CenteredMessage message="불러오는 중..." />;
   }
 
   if (isError) {
     return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-red-400">클래스 목록을 불러오지 못했습니다.</p>
-      </main>
+      <CenteredMessage
+        message="클래스 목록을 불러오지 못했습니다."
+        variant="error"
+      />
     );
   }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLogin } from '@/hooks/useAuth';
-import { ApiError } from '@/lib/api';
+import { getErrorMessage } from '@/lib/api';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 
@@ -46,9 +46,7 @@ export default function LoginPage() {
 
         {login.isError && (
           <p className="mt-4 text-sm text-red-400">
-            {login.error instanceof ApiError
-              ? login.error.message
-              : '로그인에 실패했습니다.'}
+            {getErrorMessage(login.error, '로그인에 실패했습니다.')}
           </p>
         )}
 

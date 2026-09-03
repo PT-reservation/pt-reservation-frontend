@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSignup } from '@/hooks/useAuth';
-import { ApiError } from '@/lib/api';
+import { getErrorMessage } from '@/lib/api';
 import { Role } from '@/types/api';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
@@ -76,9 +76,7 @@ export default function SignupPage() {
 
         {signup.isError && (
           <p className="mt-4 text-sm text-red-400">
-            {signup.error instanceof ApiError
-              ? signup.error.message
-              : '회원가입에 실패했습니다.'}
+            {getErrorMessage(signup.error, '회원가입에 실패했습니다.')}
           </p>
         )}
 
