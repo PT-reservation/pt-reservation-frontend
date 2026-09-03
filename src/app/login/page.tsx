@@ -23,7 +23,7 @@ export default function LoginPage() {
     <main className="flex flex-1 items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-lg border border-border bg-surface p-8"
+        className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
       >
         <h1 className="text-xl font-semibold text-foreground">로그인</h1>
 

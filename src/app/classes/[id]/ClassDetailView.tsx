@@ -48,7 +48,7 @@ export function ClassDetailView({ classId }: { classId: number }) {
 
   return (
     <main className="flex flex-1 justify-center px-4 py-10">
-      <div className="w-full max-w-lg rounded-lg border border-border bg-surface p-8">
+      <div className="w-full max-w-lg rounded-2xl bg-surface p-8 shadow-lg shadow-black/20">
         <h1 className="text-2xl font-semibold text-foreground">
           {fitnessClass.title}
         </h1>
@@ -57,10 +57,15 @@ export function ClassDetailView({ classId }: { classId: number }) {
           {formatDateTime(fitnessClass.classDateTime)}
         </p>
 
-        <p className="mt-6 text-lg font-medium text-brand">
-          {fitnessClass.currentCount}/{fitnessClass.capacity}명
+        <p className="mt-6 text-3xl font-bold text-brand">
+          {fitnessClass.currentCount}
+          <span className="text-base font-normal text-muted">
+            /{fitnessClass.capacity}명
+          </span>
           {isFull && (
-            <span className="ml-2 text-sm text-amber-400">(마감)</span>
+            <span className="ml-2 align-middle text-sm font-normal text-brand/70">
+              (마감)
+            </span>
           )}
         </p>
 

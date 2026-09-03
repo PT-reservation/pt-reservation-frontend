@@ -78,7 +78,7 @@ export default function TrainerClassesPage() {
             ) : (
               <div
                 key={fitnessClass.id}
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-4"
+                className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
               >
                 <div>
                   <p className="text-foreground">{fitnessClass.title}</p>

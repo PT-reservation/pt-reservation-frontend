@@ -42,7 +42,7 @@ export function ClassForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-4 flex flex-col gap-3 rounded-lg border border-border bg-surface p-4"
+      className="mt-4 flex flex-col gap-3 rounded-2xl bg-surface p-4 shadow-md shadow-black/20"
     >
       <Input
         type="text"

@@ -54,7 +54,7 @@ export default function MyPage() {
         </p>
 
         {role === 'MEMBER' && (
-          <section className="mt-8 rounded-lg border border-border bg-surface p-6">
+          <section className="mt-8 rounded-2xl bg-surface p-6 shadow-md shadow-black/20">
             <h2 className="font-semibold text-foreground">세션권</h2>
 
             {ticket.isLoading ? (
@@ -62,9 +62,12 @@ export default function MyPage() {
             ) : isNoTicket ? (
               <p className="mt-2 text-muted">아직 충전한 세션권이 없어요.</p>
             ) : ticket.data ? (
-              <p className="mt-2 text-lg text-brand">
-                잔여 {ticket.data.remainingCount}회 / 총{' '}
-                {ticket.data.totalCount}회
+              <p className="mt-2 text-3xl font-bold text-brand">
+                {ticket.data.remainingCount}
+                <span className="text-base font-normal text-muted">
+                  {' '}
+                  / {ticket.data.totalCount}회
+                </span>
               </p>
             ) : null}
 
@@ -90,7 +93,7 @@ export default function MyPage() {
             {reservations?.map((reservation) => (
               <div
                 key={reservation.id}
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-4"
+                className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
               >
                 <div>
                   <p className="text-foreground">{reservation.classTitle}</p>

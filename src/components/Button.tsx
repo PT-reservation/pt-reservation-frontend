@@ -17,7 +17,7 @@ export function Button({
   return (
     <button
       {...props}
-      className={`rounded-md px-4 py-2 font-medium disabled:opacity-50 ${variantClass} ${className}`}
+      className={`rounded-full px-5 py-2.5 font-medium transition-transform active:scale-95 disabled:opacity-50 disabled:active:scale-100 ${variantClass} ${className}`}
     />
   );
 }
