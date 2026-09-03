@@ -40,3 +40,14 @@ export function useLogin() {
     },
   });
 }
+
+export function useDeleteAccount() {
+  const { logout } = useCurrentUser();
+
+  return useMutation({
+    mutationFn: () => apiFetch<void>('/members/me', { method: 'DELETE' }),
+    onSuccess: () => {
+      logout();
+    },
+  });
+}

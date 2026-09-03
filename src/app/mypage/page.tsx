@@ -6,9 +6,11 @@ import {
   useMyReservations,
   useCancelReservation,
 } from '@/hooks/useReservations';
+import { useRouter } from 'next/navigation';
+import { useDeleteAccount } from '@/hooks/useAuth';
 import { useMyTicket } from '@/hooks/useTicket';
 import { useMyClasses } from '@/hooks/useTrainerClasses';
-import { ApiError } from '@/lib/api';
+import { ApiError, getErrorMessage } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
@@ -25,6 +27,8 @@ export default function MyPage() {
   const ticket = useMyTicket();
   const myClasses = useMyClasses();
   const cancelReservation = useCancelReservation();
+  const router = useRouter();
+  const deleteAccount = useDeleteAccount();
 
   if (!isInitialized) {
     return <CenteredMessage message="불러오는 중..." />;
@@ -156,6 +160,27 @@ export default function MyPage() {
             </div>
           </section>
         )}
+
+        <div className="mt-10 text-center">
+          {deleteAccount.error && (
+            <p className="mb-2 text-sm text-red-400">
+              {getErrorMessage(deleteAccount.error, '탈퇴에 실패했습니다.')}
+            </p>
+          )}
+          <button
+            onClick={() => {
+              if (confirm('정말 탈퇴하시겠어요? 되돌릴 수 없습니다.')) {
+                deleteAccount.mutate(undefined, {
+                  onSuccess: () => router.push('/'),
+                });
+              }
+            }}
+            disabled={deleteAccount.isPending}
+            className="text-xs text-muted hover:text-red-400"
+          >
+            {deleteAccount.isPending ? '처리 중...' : '회원 탈퇴'}
+          </button>
+        </div>
       </div>
     </main>
   );
