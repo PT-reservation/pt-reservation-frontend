@@ -1,15 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import { useCurrentUser } from '@/lib/auth-context';
 import {
   useMyReservations,
   useCancelReservation,
 } from '@/hooks/useReservations';
-import { useMyTicket, useChargeTicket } from '@/hooks/useTicket';
+import { useMyTicket } from '@/hooks/useTicket';
 import { ApiError } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
-import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
 import { CenteredMessage } from '@/components/CenteredMessage';
@@ -22,10 +21,7 @@ export default function MyPage() {
   const { isLoggedIn, email, role, isInitialized } = useCurrentUser();
   const { data: reservations } = useMyReservations();
   const ticket = useMyTicket();
-  const chargeTicket = useChargeTicket();
   const cancelReservation = useCancelReservation();
-
-  const [chargeCount, setChargeCount] = useState('10');
 
   if (!isInitialized) {
     return <CenteredMessage message="불러오는 중..." />;
@@ -34,14 +30,6 @@ export default function MyPage() {
   if (!isLoggedIn) {
     return <CenteredMessage message="로그인 후 이용할 수 있습니다." />;
   }
-
-  const handleCharge = (e: React.FormEvent) => {
-    e.preventDefault();
-    const count = Number(chargeCount);
-    if (count > 0) {
-      chargeTicket.mutate(count);
-    }
-  };
 
   const isNoTicket =
     ticket.error instanceof ApiError && ticket.error.code === 'NO_TICKET';
@@ -72,18 +60,12 @@ export default function MyPage() {
               </p>
             ) : null}
 
-            <form onSubmit={handleCharge} className="mt-4 flex gap-2">
-              <Input
-                type="number"
-                min={1}
-                value={chargeCount}
-                onChange={(e) => setChargeCount(e.target.value)}
-                className="w-24"
-              />
-              <Button type="submit" disabled={chargeTicket.isPending}>
-                {chargeTicket.isPending ? '충전 중...' : '충전하기'}
-              </Button>
-            </form>
+            <Link
+              href="/shop"
+              className="mt-4 inline-block text-sm font-medium text-brand hover:underline"
+            >
+              세션권 충전하러 가기 →
+            </Link>
           </section>
         )}
 

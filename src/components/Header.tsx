@@ -56,7 +56,7 @@ export function Header() {
             <>
               {role === 'MEMBER' && ticket.data && (
                 <Link
-                  href="/mypage"
+                  href="/shop"
                   className="flex items-center gap-1 text-brand"
                 >
                   <TicketIcon />
@@ -66,6 +66,11 @@ export function Header() {
               <Link href="/mypage" className="text-muted hover:text-foreground">
                 마이페이지
               </Link>
+              {role === 'MEMBER' && (
+                <Link href="/shop" className="text-muted hover:text-foreground">
+                  상점
+                </Link>
+              )}
               {role === 'TRAINER' && (
                 <Link
                   href="/trainer/classes"
