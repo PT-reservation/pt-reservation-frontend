@@ -24,13 +24,21 @@ const statusColor: Record<string, string> = {
 };
 
 export default function MyPage() {
-  const { isLoggedIn, email, role } = useCurrentUser();
+  const { isLoggedIn, email, role, isInitialized } = useCurrentUser();
   const { data: reservations } = useMyReservations();
   const ticket = useMyTicket();
   const chargeTicket = useChargeTicket();
   const cancelReservation = useCancelReservation();
 
   const [chargeCount, setChargeCount] = useState('10');
+
+  if (!isInitialized) {
+    return (
+      <main className="flex flex-1 items-center justify-center">
+        <p className="text-muted">불러오는 중...</p>
+      </main>
+    );
+  }
 
   if (!isLoggedIn) {
     return (

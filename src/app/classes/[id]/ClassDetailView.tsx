@@ -12,7 +12,7 @@ import { ApiError } from '@/lib/api';
 import { Button } from '@/components/Button';
 
 export function ClassDetailView({ classId }: { classId: number }) {
-  const { isLoggedIn, role } = useCurrentUser();
+  const { isLoggedIn, role, isInitialized } = useCurrentUser();
   const { data: fitnessClass, isLoading, isError } = useClass(classId);
   const { data: myReservations } = useMyReservations();
 
@@ -87,7 +87,7 @@ export function ClassDetailView({ classId }: { classId: number }) {
           </p>
         )}
 
-        {!isLoggedIn ? (
+        {!isInitialized ? null : !isLoggedIn ? (
           <p className="mt-6 text-sm text-muted">예약하려면 로그인해주세요.</p>
         ) : role !== 'MEMBER' ? (
           <p className="mt-6 text-sm text-muted">

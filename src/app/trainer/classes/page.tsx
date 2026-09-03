@@ -14,7 +14,7 @@ import { Button } from '@/components/Button';
 import { FitnessClass } from '@/types/api';
 
 export default function TrainerClassesPage() {
-  const { isLoggedIn, role } = useCurrentUser();
+  const { isLoggedIn, role, isInitialized } = useCurrentUser();
   const { data: classes, isLoading } = useMyClasses();
 
   const createClass = useCreateClass();
@@ -22,6 +22,14 @@ export default function TrainerClassesPage() {
 
   const [isCreating, setIsCreating] = useState(false);
   const [editingClass, setEditingClass] = useState<FitnessClass | null>(null);
+
+  if (!isInitialized) {
+    return (
+      <main className="flex flex-1 items-center justify-center">
+        <p className="text-muted">불러오는 중...</p>
+      </main>
+    );
+  }
 
   if (!isLoggedIn || role !== 'TRAINER') {
     return (

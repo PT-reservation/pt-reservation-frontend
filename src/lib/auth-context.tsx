@@ -20,6 +20,7 @@ interface AuthState {
   email: string | null;
   role: Role | null;
   isLoggedIn: boolean;
+  isInitialized: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -29,6 +30,7 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null);
   const [role, setRole] = useState<Role | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setRole(payload.role);
       }
     }
+    setIsInitialized(true);
   }, []);
 
   const login = (token: string) => {
@@ -61,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ email, role, isLoggedIn: !!email, login, logout }}
+      value={{ email, role, isLoggedIn: !!email, isInitialized, login, logout }}
     >
       {children}
     </AuthContext.Provider>
