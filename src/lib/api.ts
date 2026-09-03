@@ -57,3 +57,7 @@ export async function apiFetch<T>(
 
   return body.data;
 }
+
+export function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof ApiError ? error.message : fallback;
+}

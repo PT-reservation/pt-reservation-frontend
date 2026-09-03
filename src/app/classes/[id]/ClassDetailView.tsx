@@ -8,8 +8,13 @@ import {
   useCancelReservation,
 } from '@/hooks/useReservations';
 import { useCurrentUser } from '@/lib/auth-context';
-import { ApiError } from '@/lib/api';
+import { getErrorMessage } from '@/lib/api';
 import { Button } from '@/components/Button';
+import { CenteredMessage } from '@/components/CenteredMessage';
+import {
+  RESERVATION_STATUS_LABEL,
+  RESERVATION_STATUS_COLOR,
+} from '@/types/api';
 
 export function ClassDetailView({ classId }: { classId: number }) {
   const { isLoggedIn, role, isInitialized } = useCurrentUser();
@@ -22,18 +27,12 @@ export function ClassDetailView({ classId }: { classId: number }) {
   useClassEvents(classId);
 
   if (isLoading) {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">불러오는 중...</p>
-      </main>
-    );
+    return <CenteredMessage message="불러오는 중..." />;
   }
 
   if (isError || !fitnessClass) {
     return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-red-400">클래스를 찾을 수 없습니다.</p>
-      </main>
+      <CenteredMessage message="클래스를 찾을 수 없습니다." variant="error" />
     );
   }
 
@@ -67,23 +66,15 @@ export function ClassDetailView({ classId }: { classId: number }) {
         {myReservation && (
           <p className="mt-2 text-sm">
             내 예약 상태:{' '}
-            <span
-              className={
-                myReservation.status === 'CONFIRMED'
-                  ? 'text-brand'
-                  : 'text-amber-400'
-              }
-            >
-              {myReservation.status === 'CONFIRMED' ? '확정' : '대기중'}
+            <span className={RESERVATION_STATUS_COLOR[myReservation.status]}>
+              {RESERVATION_STATUS_LABEL[myReservation.status]}
             </span>
           </p>
         )}
 
         {mutationError && (
           <p className="mt-4 text-sm text-red-400">
-            {mutationError instanceof ApiError
-              ? mutationError.message
-              : '요청에 실패했습니다.'}
+            {getErrorMessage(mutationError, '요청에 실패했습니다.')}
           </p>
         )}
 

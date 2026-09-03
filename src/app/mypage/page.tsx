@@ -10,18 +10,11 @@ import { useMyTicket, useChargeTicket } from '@/hooks/useTicket';
 import { ApiError } from '@/lib/api';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-
-const statusLabel: Record<string, string> = {
-  CONFIRMED: '확정',
-  WAITLISTED: '대기중',
-  CANCELLED: '취소됨',
-};
-
-const statusColor: Record<string, string> = {
-  CONFIRMED: 'text-brand',
-  WAITLISTED: 'text-amber-400',
-  CANCELLED: 'text-zinc-500',
-};
+import { CenteredMessage } from '@/components/CenteredMessage';
+import {
+  RESERVATION_STATUS_LABEL,
+  RESERVATION_STATUS_COLOR,
+} from '@/types/api';
 
 export default function MyPage() {
   const { isLoggedIn, email, role, isInitialized } = useCurrentUser();
@@ -33,19 +26,11 @@ export default function MyPage() {
   const [chargeCount, setChargeCount] = useState('10');
 
   if (!isInitialized) {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">불러오는 중...</p>
-      </main>
-    );
+    return <CenteredMessage message="불러오는 중..." />;
   }
 
   if (!isLoggedIn) {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">로그인 후 이용할 수 있습니다.</p>
-      </main>
-    );
+    return <CenteredMessage message="로그인 후 이용할 수 있습니다." />;
   }
 
   const handleCharge = (e: React.FormEvent) => {
@@ -115,9 +100,9 @@ export default function MyPage() {
 
                 <div className="flex items-center gap-3">
                   <span
-                    className={`text-sm font-medium ${statusColor[reservation.status]}`}
+                    className={`text-sm font-medium ${RESERVATION_STATUS_COLOR[reservation.status]}`}
                   >
-                    {statusLabel[reservation.status]}
+                    {RESERVATION_STATUS_LABEL[reservation.status]}
                   </span>
 
                   {(reservation.status === 'CONFIRMED' ||

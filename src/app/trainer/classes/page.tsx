@@ -9,8 +9,9 @@ import {
   useDeleteClass,
 } from '@/hooks/useTrainerClasses';
 import { ClassForm } from '@/components/ClassForm';
-import { ApiError } from '@/lib/api';
+import { ApiError, getErrorMessage } from '@/lib/api';
 import { Button } from '@/components/Button';
+import { CenteredMessage } from '@/components/CenteredMessage';
 import { FitnessClass } from '@/types/api';
 
 export default function TrainerClassesPage() {
@@ -24,19 +25,11 @@ export default function TrainerClassesPage() {
   const [editingClass, setEditingClass] = useState<FitnessClass | null>(null);
 
   if (!isInitialized) {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">불러오는 중...</p>
-      </main>
-    );
+    return <CenteredMessage message="불러오는 중..." />;
   }
 
   if (!isLoggedIn || role !== 'TRAINER') {
-    return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="text-muted">트레이너 계정만 접근할 수 있습니다.</p>
-      </main>
-    );
+    return <CenteredMessage message="트레이너 계정만 접근할 수 있습니다." />;
   }
 
   const error = createClass.error || deleteClass.error;
@@ -55,7 +48,7 @@ export default function TrainerClassesPage() {
 
         {error && (
           <p className="mt-4 text-sm text-red-400">
-            {error instanceof ApiError ? error.message : '요청에 실패했습니다.'}
+            {getErrorMessage(error, '요청에 실패했습니다.')}
           </p>
         )}
 
