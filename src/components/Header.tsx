@@ -15,6 +15,7 @@ function TicketIcon() {
       stroke="currentColor"
       strokeWidth={1.5}
       className="h-4 w-4"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -28,7 +29,12 @@ function TicketIcon() {
 
 function MemberIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-full w-full">
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-full w-full"
+      aria-hidden="true"
+    >
       <circle cx="12" cy="8" r="4" />
       <path d="M4 21v-1a8 8 0 0 1 16 0v1z" />
     </svg>
@@ -37,7 +43,12 @@ function MemberIcon() {
 
 function TrainerIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-full w-full">
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-full w-full"
+      aria-hidden="true"
+    >
       <circle cx="12" cy="9" r="3.5" />
       <path d="M4 21v-1a8 8 0 0 1 16 0v1z" />
       <path d="M12 2 4 5l8 3 8-3-8-3z" />
