@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/Skeleton';
 import { motion } from 'framer-motion';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { ClassImage } from '@/components/ClassImage';
+import { HomeBanner } from '@/components/HomeBanner';
 import { formatDateTime } from '@/lib/date';
 
 export default function Home() {
@@ -49,8 +50,11 @@ export default function Home() {
   return (
     <main className="flex-1 px-4 py-10">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-2xl font-semibold text-foreground">클래스 목록</h1>
+        <HomeBanner classes={classes ?? []} />
 
+        <h1 className="mt-6 text-2xl font-semibold text-foreground">
+          클래스 목록
+        </h1>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {classes?.map((fitnessClass, index) => (
             <motion.div
