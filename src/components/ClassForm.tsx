@@ -72,12 +72,14 @@ export function ClassForm({
       <Input
         type="text"
         placeholder="클래스 제목"
+        aria-label="클래스 제목"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
       <Input
         type="datetime-local"
+        aria-label="클래스 일시"
         value={classDateTime}
         onChange={(e) => setClassDateTime(e.target.value)}
         required
@@ -86,12 +88,14 @@ export function ClassForm({
         type="number"
         min={1}
         placeholder="정원"
+        aria-label="정원"
         value={capacity}
         onChange={(e) => setCapacity(e.target.value)}
         required
       />
       <textarea
         placeholder="클래스 설명"
+        aria-label="클래스 설명"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={3}

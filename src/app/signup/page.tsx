@@ -37,6 +37,7 @@ export default function SignupPage() {
           <Input
             type="email"
             placeholder="이메일"
+            aria-label="이메일"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -44,6 +45,7 @@ export default function SignupPage() {
           <Input
             type="password"
             placeholder="비밀번호 (8자 이상)"
+            aria-label="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -51,6 +53,7 @@ export default function SignupPage() {
           <Input
             type="text"
             placeholder="이름"
+            aria-label="이름"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

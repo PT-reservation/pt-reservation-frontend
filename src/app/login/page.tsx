@@ -31,6 +31,7 @@ export default function LoginPage() {
           <Input
             type="email"
             placeholder="이메일"
+            aria-label="이메일"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -38,6 +39,7 @@ export default function LoginPage() {
           <Input
             type="password"
             placeholder="비밀번호"
+            aria-label="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
