@@ -9,6 +9,7 @@ import {
 } from '@/hooks/useReservations';
 import { useCurrentUser } from '@/lib/auth-context';
 import { getErrorMessage } from '@/lib/api';
+import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import {
@@ -53,7 +54,7 @@ export function ClassDetailView({ classId }: { classId: number }) {
         </h1>
         <p className="mt-2 text-muted">트레이너 {fitnessClass.trainerName}</p>
         <p className="mt-1 text-muted">
-          {new Date(fitnessClass.classDateTime).toLocaleString('ko-KR')}
+          {formatDateTime(fitnessClass.classDateTime)}
         </p>
 
         <p className="mt-6 text-lg font-medium text-brand">

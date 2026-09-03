@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useClasses } from '@/hooks/useClasses';
 import { CenteredMessage } from '@/components/CenteredMessage';
+import { formatDateTime } from '@/lib/date';
 
 export default function Home() {
   const { data: classes, isLoading, isError } = useClasses();
@@ -39,7 +40,7 @@ export default function Home() {
                 {fitnessClass.trainerName}
               </p>
               <p className="mt-1 text-sm text-muted">
-                {new Date(fitnessClass.classDateTime).toLocaleString('ko-KR')}
+                {formatDateTime(fitnessClass.classDateTime)}
               </p>
               <p className="mt-3 text-sm font-medium text-brand">
                 {fitnessClass.currentCount}/{fitnessClass.capacity}명

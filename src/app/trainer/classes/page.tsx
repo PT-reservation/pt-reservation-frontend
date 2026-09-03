@@ -9,7 +9,8 @@ import {
   useDeleteClass,
 } from '@/hooks/useTrainerClasses';
 import { ClassForm } from '@/components/ClassForm';
-import { ApiError, getErrorMessage } from '@/lib/api';
+import { getErrorMessage } from '@/lib/api';
+import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import { FitnessClass } from '@/types/api';
@@ -82,10 +83,8 @@ export default function TrainerClassesPage() {
                 <div>
                   <p className="text-foreground">{fitnessClass.title}</p>
                   <p className="text-sm text-muted">
-                    {new Date(fitnessClass.classDateTime).toLocaleString(
-                      'ko-KR',
-                    )}{' '}
-                    · {fitnessClass.currentCount}/{fitnessClass.capacity}명
+                    {formatDateTime(fitnessClass.classDateTime)} ·{' '}
+                    {fitnessClass.currentCount}/{fitnessClass.capacity}명
                   </p>
                 </div>
 
