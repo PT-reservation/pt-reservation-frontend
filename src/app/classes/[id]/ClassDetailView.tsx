@@ -12,6 +12,7 @@ import { getErrorMessage } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import {
   RESERVATION_STATUS_LABEL,
@@ -69,7 +70,7 @@ export function ClassDetailView({ classId }: { classId: number }) {
         </p>
 
         <p className="mt-6 text-3xl font-bold text-brand">
-          {fitnessClass.currentCount}
+          <AnimatedNumber value={fitnessClass.currentCount} />
           <span className="text-base font-normal text-muted">
             /{fitnessClass.capacity}명
           </span>

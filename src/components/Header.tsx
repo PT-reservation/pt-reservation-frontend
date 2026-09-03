@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { useRouter } from 'next/navigation';
 import { useCurrentUser } from '@/lib/auth-context';
 import { useMyTicket } from '@/hooks/useTicket';
@@ -59,7 +60,7 @@ export function Header() {
                   className="flex items-center gap-1 text-brand"
                 >
                   <TicketIcon />
-                  {ticket.data.remainingCount}회
+                  <AnimatedNumber value={ticket.data.remainingCount} />회
                 </Link>
               )}
               <Link href="/mypage" className="text-muted hover:text-foreground">
