@@ -26,6 +26,25 @@ function TicketIcon() {
   );
 }
 
+function MemberIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-full w-full">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21v-1a8 8 0 0 1 16 0v1z" />
+    </svg>
+  );
+}
+
+function TrainerIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-full w-full">
+      <circle cx="12" cy="9" r="3.5" />
+      <path d="M4 21v-1a8 8 0 0 1 16 0v1z" />
+      <path d="M12 2 4 5l8 3 8-3-8-3z" />
+    </svg>
+  );
+}
+
 export function Header() {
   const router = useRouter();
   const { isLoggedIn, role, isInitialized, logout } = useCurrentUser();
@@ -49,7 +68,7 @@ export function Header() {
 
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/" className="text-muted hover:text-foreground">
-            클래스 목록
+            클래스
           </Link>
 
           {!isInitialized ? null : isLoggedIn ? (
@@ -63,14 +82,6 @@ export function Header() {
                   <AnimatedNumber value={ticket.data.remainingCount} />회
                 </Link>
               )}
-              <Link href="/mypage" className="text-muted hover:text-foreground">
-                마이페이지
-              </Link>
-              {role === 'MEMBER' && (
-                <Link href="/shop" className="text-muted hover:text-foreground">
-                  상점
-                </Link>
-              )}
               {role === 'TRAINER' && (
                 <Link
                   href="/trainer/classes"
@@ -79,6 +90,13 @@ export function Header() {
                   내 클래스 관리
                 </Link>
               )}
+              <Link
+                href="/mypage"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 p-1.5 text-brand hover:bg-brand/20"
+                aria-label="마이페이지"
+              >
+                {role === 'TRAINER' ? <TrainerIcon /> : <MemberIcon />}
+              </Link>
               <button
                 onClick={handleLogout}
                 className="text-muted hover:text-foreground"

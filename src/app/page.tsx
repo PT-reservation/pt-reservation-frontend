@@ -77,7 +77,7 @@ export default function Home() {
                   {fitnessClass.title}
                 </h2>
                 <p className="mt-1 text-sm text-muted">
-                  {fitnessClass.trainerName}
+                  {fitnessClass.trainerName} 트레이너
                 </p>
                 <p className="mt-1 text-sm text-muted">
                   {formatDateTime(fitnessClass.classDateTime)}
