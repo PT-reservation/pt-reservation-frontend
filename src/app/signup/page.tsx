@@ -29,7 +29,7 @@ export default function SignupPage() {
     <main className="flex flex-1 items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
+        className="w-full max-w-sm rounded-2xl bg-surface p-8 shadow-lg shadow-black/20"
       >
         <h1 className="text-xl font-semibold text-foreground">회원가입</h1>
 

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useClasses } from '@/hooks/useClasses';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import { Skeleton } from '@/components/Skeleton';
+import { motion } from 'framer-motion';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { formatDateTime } from '@/lib/date';
 
 export default function Home() {
@@ -49,28 +51,38 @@ export default function Home() {
         <h1 className="text-2xl font-semibold text-foreground">클래스 목록</h1>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {classes?.map((fitnessClass) => (
-            <Link
+          {classes?.map((fitnessClass, index) => (
+            <motion.div
               key={fitnessClass.id}
-              href={`/classes/${fitnessClass.id}`}
-              className="rounded-2xl bg-surface p-5 shadow-md shadow-black/20 transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: index * 0.05,
+                duration: 0.3,
+                ease: 'easeOut',
+              }}
             >
-              <h2 className="font-semibold text-foreground">
-                {fitnessClass.title}
-              </h2>
-              <p className="mt-1 text-sm text-muted">
-                {fitnessClass.trainerName}
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                {formatDateTime(fitnessClass.classDateTime)}
-              </p>
-              <p className="mt-3 text-2xl font-bold text-brand">
-                {fitnessClass.currentCount}
-                <span className="text-base font-normal text-muted">
-                  /{fitnessClass.capacity}명
-                </span>
-              </p>
-            </Link>
+              <Link
+                href={`/classes/${fitnessClass.id}`}
+                className="block rounded-2xl bg-surface p-5 shadow-md shadow-black/20 transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <h2 className="font-semibold text-foreground">
+                  {fitnessClass.title}
+                </h2>
+                <p className="mt-1 text-sm text-muted">
+                  {fitnessClass.trainerName}
+                </p>
+                <p className="mt-1 text-sm text-muted">
+                  {formatDateTime(fitnessClass.classDateTime)}
+                </p>
+                <p className="mt-3 text-2xl font-bold text-brand">
+                  <AnimatedNumber value={fitnessClass.currentCount} />
+                  <span className="text-base font-normal text-muted">
+                    /{fitnessClass.capacity}명
+                  </span>
+                </p>
+              </Link>
+            </motion.div>
           ))}
         </div>
 
