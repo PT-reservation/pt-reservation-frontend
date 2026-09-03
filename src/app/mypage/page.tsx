@@ -11,6 +11,7 @@ import { ApiError } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
+import { Skeleton } from '@/components/Skeleton';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import {
   RESERVATION_STATUS_LABEL,
@@ -58,7 +59,7 @@ export default function MyPage() {
             <h2 className="font-semibold text-foreground">세션권</h2>
 
             {ticket.isLoading ? (
-              <p className="mt-2 text-muted">불러오는 중...</p>
+              <Skeleton className="mt-2 h-8 w-1/3" />
             ) : isNoTicket ? (
               <p className="mt-2 text-muted">아직 충전한 세션권이 없어요.</p>
             ) : ticket.data ? (
