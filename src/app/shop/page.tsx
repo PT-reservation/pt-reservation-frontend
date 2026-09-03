@@ -6,11 +6,20 @@ import { Button } from '@/components/Button';
 import { CenteredMessage } from '@/components/CenteredMessage';
 import { ApiError } from '@/lib/api';
 
+const BASE_UNIT_PRICE = 10000;
+
 const PACKAGES = [
-  { count: 10, price: 100000 },
-  { count: 20, price: 180000, discountLabel: '10% 할인' },
-  { count: 30, price: 240000, discountLabel: '20% 할인' },
-];
+  { count: 10, discountRate: 0 },
+  { count: 20, discountRate: 0.05 },
+  { count: 30, discountRate: 0.1 },
+  { count: 50, discountRate: 0.15 },
+  { count: 100, discountRate: 0.2 },
+].map((pkg) => ({
+  ...pkg,
+  price:
+    Math.round((pkg.count * BASE_UNIT_PRICE * (1 - pkg.discountRate)) / 1000) *
+    1000,
+}));
 
 export default function ShopPage() {
   const { isLoggedIn, role, isInitialized } = useCurrentUser();
@@ -30,7 +39,7 @@ export default function ShopPage() {
 
   return (
     <main className="flex-1 px-4 py-10">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-4xl">
         <h1 className="text-2xl font-semibold text-foreground">세션권 상점</h1>
 
         <p className="mt-2 text-muted">
@@ -40,17 +49,19 @@ export default function ShopPage() {
           </span>
         </p>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {PACKAGES.map((pkg) => (
             <div
               key={pkg.count}
               className="flex flex-col rounded-2xl bg-surface p-6 text-center shadow-md shadow-black/20"
             >
-              {pkg.discountLabel && (
-                <span className="mx-auto mb-2 rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand">
-                  {pkg.discountLabel}
-                </span>
-              )}
+              <span
+                className={`mx-auto mb-2 rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand ${
+                  pkg.discountRate === 0 ? 'invisible' : ''
+                }`}
+              >
+                {Math.round(pkg.discountRate * 100)}% 할인
+              </span>
               <p className="text-3xl font-bold text-foreground">
                 {pkg.count}회
               </p>
