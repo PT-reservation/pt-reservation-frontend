@@ -31,7 +31,7 @@ export default function Home() {
             <Link
               key={fitnessClass.id}
               href={`/classes/${fitnessClass.id}`}
-              className="rounded-lg border border-border bg-surface p-5 hover:border-brand"
+              className="rounded-2xl bg-surface p-5 shadow-md shadow-black/20 transition-transform hover:-translate-y-0.5 hover:shadow-lg"
             >
               <h2 className="font-semibold text-foreground">
                 {fitnessClass.title}
@@ -42,8 +42,11 @@ export default function Home() {
               <p className="mt-1 text-sm text-muted">
                 {formatDateTime(fitnessClass.classDateTime)}
               </p>
-              <p className="mt-3 text-sm font-medium text-brand">
-                {fitnessClass.currentCount}/{fitnessClass.capacity}명
+              <p className="mt-3 text-2xl font-bold text-brand">
+                {fitnessClass.currentCount}
+                <span className="text-base font-normal text-muted">
+                  /{fitnessClass.capacity}명
+                </span>
               </p>
             </Link>
           ))}

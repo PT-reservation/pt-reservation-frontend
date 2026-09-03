@@ -26,7 +26,7 @@ export const RESERVATION_STATUS_LABEL: Record<ReservationStatus, string> = {
 
 export const RESERVATION_STATUS_COLOR: Record<ReservationStatus, string> = {
   CONFIRMED: 'text-brand',
-  WAITLISTED: 'text-amber-400',
+  WAITLISTED: 'text-brand/60',
   CANCELLED: 'text-zinc-500',
 };
 
