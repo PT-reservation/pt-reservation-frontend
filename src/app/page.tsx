@@ -6,6 +6,7 @@ import { CenteredMessage } from '@/components/CenteredMessage';
 import { Skeleton } from '@/components/Skeleton';
 import { motion } from 'framer-motion';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
+import { ClassImage } from '@/components/ClassImage';
 import { formatDateTime } from '@/lib/date';
 
 export default function Home() {
@@ -66,13 +67,11 @@ export default function Home() {
                 href={`/classes/${fitnessClass.id}`}
                 className="block rounded-2xl bg-surface p-5 shadow-md shadow-black/20 transition-transform hover:-translate-y-0.5 hover:shadow-lg"
               >
-                {fitnessClass.imageUrl && (
-                  <img
-                    src={fitnessClass.imageUrl}
-                    alt={fitnessClass.title}
-                    className="mb-3 h-32 w-full rounded-xl object-cover"
-                  />
-                )}
+                <ClassImage
+                  src={fitnessClass.imageUrl}
+                  alt={fitnessClass.title}
+                  className="mb-3 h-32"
+                />
                 <h2 className="font-semibold text-foreground">
                   {fitnessClass.title}
                 </h2>

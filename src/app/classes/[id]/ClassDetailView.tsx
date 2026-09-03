@@ -14,6 +14,7 @@ import { Button } from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { CenteredMessage } from '@/components/CenteredMessage';
+import { ClassImage } from '@/components/ClassImage';
 import {
   RESERVATION_STATUS_LABEL,
   RESERVATION_STATUS_COLOR,
@@ -61,13 +62,11 @@ export function ClassDetailView({ classId }: { classId: number }) {
   return (
     <main className="flex flex-1 justify-center px-4 py-10">
       <div className="w-full max-w-lg rounded-2xl bg-surface p-8 shadow-lg shadow-black/20">
-        {fitnessClass.imageUrl && (
-          <img
-            src={fitnessClass.imageUrl}
-            alt={fitnessClass.title}
-            className="mb-4 h-56 w-full rounded-xl object-cover"
-          />
-        )}
+        <ClassImage
+          src={fitnessClass.imageUrl}
+          alt={fitnessClass.title}
+          className="mb-4 h-56"
+        />
         <h1 className="text-2xl font-semibold text-foreground">
           {fitnessClass.title}
         </h1>

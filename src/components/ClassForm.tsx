@@ -91,10 +91,11 @@ export function ClassForm({
         required
       />
       <textarea
-        placeholder="클래스 설명 (선택)"
+        placeholder="클래스 설명"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={3}
+        required
         className="rounded-xl border border-transparent bg-black/30 px-4 py-3 text-foreground outline-none transition-colors focus:border-brand"
       />
 
