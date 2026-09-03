@@ -4,12 +4,12 @@ import { Reservation } from '@/types/api';
 import { useCurrentUser } from '@/lib/auth-context';
 
 export function useMyReservations() {
-  const { isLoggedIn } = useCurrentUser();
+  const { isLoggedIn, role } = useCurrentUser();
 
   return useQuery({
     queryKey: ['myReservations'],
     queryFn: () => apiFetch<Reservation[]>('/members/me/reservations'),
-    enabled: isLoggedIn,
+    enabled: isLoggedIn && role === 'MEMBER',
   });
 }
 
