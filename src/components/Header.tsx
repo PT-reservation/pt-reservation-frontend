@@ -6,7 +6,7 @@ import { useCurrentUser } from '@/lib/auth-context';
 
 export function Header() {
   const router = useRouter();
-  const { isLoggedIn, role, logout } = useCurrentUser();
+  const { isLoggedIn, role, isInitialized, logout } = useCurrentUser();
 
   const handleLogout = () => {
     logout();
@@ -25,7 +25,7 @@ export function Header() {
             클래스 목록
           </Link>
 
-          {isLoggedIn ? (
+          {!isInitialized ? null : isLoggedIn ? (
             <>
               <Link href="/mypage" className="text-muted hover:text-foreground">
                 마이페이지
