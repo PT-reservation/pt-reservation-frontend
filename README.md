@@ -1,4 +1,4 @@
-# PT Reservation — Frontend
+# PT팟 — Frontend
 
 그룹 PT 클래스 예약 시스템의 프론트엔드입니다. 백엔드의 낙관적 락/SSE 기반 실시간 예약 시스템을 실제 사용자가 쓸 수 있는 화면으로 구현했습니다.
 

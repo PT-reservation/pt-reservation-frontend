@@ -16,8 +16,12 @@ export function Header() {
   return (
     <header className="border-b border-border bg-surface px-4 py-3">
       <div className="mx-auto flex max-w-3xl items-center justify-between">
-        <Link href="/" className="font-semibold text-foreground">
-          PT Reservation
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-semibold text-foreground"
+        >
+          <img src="/logo.png" alt="PT팟 로고" className="h-7 w-7" />
+          PT팟
         </Link>
 
         <nav className="flex items-center gap-4 text-sm">
