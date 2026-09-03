@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
 import { FitnessClass } from '@/types/api';
+import { useCurrentUser } from '@/lib/auth-context';
 
 interface ClassInput {
   title: string;
@@ -9,9 +10,12 @@ interface ClassInput {
 }
 
 export function useMyClasses() {
+  const { isLoggedIn, role } = useCurrentUser();
+
   return useQuery({
     queryKey: ['trainerClasses'],
     queryFn: () => apiFetch<FitnessClass[]>('/trainers/me/classes'),
+    enabled: isLoggedIn && role === 'TRAINER',
   });
 }
 

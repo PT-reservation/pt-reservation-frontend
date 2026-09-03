@@ -7,11 +7,13 @@ import {
   useCancelReservation,
 } from '@/hooks/useReservations';
 import { useMyTicket } from '@/hooks/useTicket';
+import { useMyClasses } from '@/hooks/useTrainerClasses';
 import { ApiError } from '@/lib/api';
 import { formatDateTime } from '@/lib/date';
 import { Button } from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
 import { CenteredMessage } from '@/components/CenteredMessage';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import {
   RESERVATION_STATUS_LABEL,
   RESERVATION_STATUS_COLOR,
@@ -21,6 +23,7 @@ export default function MyPage() {
   const { isLoggedIn, email, role, isInitialized } = useCurrentUser();
   const { data: reservations } = useMyReservations();
   const ticket = useMyTicket();
+  const myClasses = useMyClasses();
   const cancelReservation = useCancelReservation();
 
   if (!isInitialized) {
@@ -33,6 +36,11 @@ export default function MyPage() {
 
   const isNoTicket =
     ticket.error instanceof ApiError && ticket.error.code === 'NO_TICKET';
+
+  const totalReserved =
+    myClasses.data?.reduce((sum, c) => sum + c.currentCount, 0) ?? 0;
+  const totalCapacity =
+    myClasses.data?.reduce((sum, c) => sum + c.capacity, 0) ?? 0;
 
   return (
     <main className="flex-1 px-4 py-10">
@@ -52,7 +60,7 @@ export default function MyPage() {
               <p className="mt-2 text-muted">아직 충전한 세션권이 없어요.</p>
             ) : ticket.data ? (
               <p className="mt-2 text-3xl font-bold text-brand">
-                {ticket.data.remainingCount}
+                <AnimatedNumber value={ticket.data.remainingCount} />
                 <span className="text-base font-normal text-muted">
                   {' '}
                   / {ticket.data.totalCount}회
@@ -69,48 +77,85 @@ export default function MyPage() {
           </section>
         )}
 
-        <section className="mt-8">
-          <h2 className="font-semibold text-foreground">내 예약 이력</h2>
+        {role === 'TRAINER' && (
+          <section className="mt-8 rounded-2xl bg-surface p-6 shadow-md shadow-black/20">
+            <h2 className="font-semibold text-foreground">내 클래스 현황</h2>
 
-          <div className="mt-4 flex flex-col gap-3">
-            {reservations?.map((reservation) => (
-              <div
-                key={reservation.id}
-                className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
-              >
+            {myClasses.isLoading ? (
+              <Skeleton className="mt-4 h-10 w-2/3" />
+            ) : (
+              <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-foreground">{reservation.classTitle}</p>
-                  <p className="text-sm text-muted">
-                    {formatDateTime(reservation.reservedAt)}
+                  <p className="text-3xl font-bold text-brand">
+                    <AnimatedNumber value={myClasses.data?.length ?? 0} />
                   </p>
+                  <p className="mt-1 text-sm text-muted">개설한 클래스</p>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`text-sm font-medium ${RESERVATION_STATUS_COLOR[reservation.status]}`}
-                  >
-                    {RESERVATION_STATUS_LABEL[reservation.status]}
-                  </span>
-
-                  {(reservation.status === 'CONFIRMED' ||
-                    reservation.status === 'WAITLISTED') && (
-                    <Button
-                      variant="secondary"
-                      onClick={() => cancelReservation.mutate(reservation.id)}
-                      disabled={cancelReservation.isPending}
-                    >
-                      취소
-                    </Button>
-                  )}
+                <div>
+                  <p className="text-3xl font-bold text-brand">
+                    <AnimatedNumber value={totalReserved} />
+                    <span className="text-base font-normal text-muted">
+                      /{totalCapacity}명
+                    </span>
+                  </p>
+                  <p className="mt-1 text-sm text-muted">전체 예약 현황</p>
                 </div>
               </div>
-            ))}
-
-            {reservations?.length === 0 && (
-              <p className="text-muted">예약 이력이 없습니다.</p>
             )}
-          </div>
-        </section>
+
+            <Link
+              href="/trainer/classes"
+              className="mt-4 inline-block text-sm font-medium text-brand hover:underline"
+            >
+              클래스 관리하러 가기 →
+            </Link>
+          </section>
+        )}
+
+        {role === 'MEMBER' && (
+          <section className="mt-8">
+            <h2 className="font-semibold text-foreground">내 예약 이력</h2>
+
+            <div className="mt-4 flex flex-col gap-3">
+              {reservations?.map((reservation) => (
+                <div
+                  key={reservation.id}
+                  className="flex items-center justify-between rounded-2xl bg-surface p-4 shadow-sm shadow-black/10"
+                >
+                  <div>
+                    <p className="text-foreground">{reservation.classTitle}</p>
+                    <p className="text-sm text-muted">
+                      {formatDateTime(reservation.reservedAt)}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`text-sm font-medium ${RESERVATION_STATUS_COLOR[reservation.status]}`}
+                    >
+                      {RESERVATION_STATUS_LABEL[reservation.status]}
+                    </span>
+
+                    {(reservation.status === 'CONFIRMED' ||
+                      reservation.status === 'WAITLISTED') && (
+                      <Button
+                        variant="secondary"
+                        onClick={() => cancelReservation.mutate(reservation.id)}
+                        disabled={cancelReservation.isPending}
+                      >
+                        취소
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {reservations?.length === 0 && (
+                <p className="text-muted">예약 이력이 없습니다.</p>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
