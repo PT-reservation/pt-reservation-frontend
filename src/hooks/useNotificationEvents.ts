@@ -6,12 +6,12 @@ import { getToken } from '@/lib/auth';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function useNotificationEvents() {
-  const { isLoggedIn } = useCurrentUser();
+  const { isLoggedIn, role } = useCurrentUser();
   const queryClient = useQueryClient();
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || role !== 'MEMBER') return;
 
     const token = getToken();
     if (!token) return;

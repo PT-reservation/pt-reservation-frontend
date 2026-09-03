@@ -67,12 +67,14 @@ export function useDeleteClass() {
 }
 
 export function useClassReservations(classId: number | null) {
+  const { isLoggedIn, role } = useCurrentUser();
+
   return useQuery({
     queryKey: ['classReservations', classId],
     queryFn: () =>
       apiFetch<ClassReservation[]>(
         `/trainers/me/classes/${classId}/reservations`,
       ),
-    enabled: classId !== null,
+    enabled: isLoggedIn && role === 'TRAINER' && classId !== null,
   });
 }
