@@ -14,6 +14,8 @@ export interface FitnessClass {
   classDateTime: string;
   capacity: number;
   currentCount: number;
+  description?: string;
+  imageUrl?: string;
 }
 
 export type ReservationStatus = 'CONFIRMED' | 'WAITLISTED' | 'CANCELLED';

@@ -7,6 +7,8 @@ interface ClassInput {
   title: string;
   classDateTime: string;
   capacity: number;
+  description: string;
+  imageUrl: string;
 }
 
 export function useMyClasses() {
