@@ -61,6 +61,13 @@ export function ClassDetailView({ classId }: { classId: number }) {
   return (
     <main className="flex flex-1 justify-center px-4 py-10">
       <div className="w-full max-w-lg rounded-2xl bg-surface p-8 shadow-lg shadow-black/20">
+        {fitnessClass.imageUrl && (
+          <img
+            src={fitnessClass.imageUrl}
+            alt={fitnessClass.title}
+            className="mb-4 h-56 w-full rounded-xl object-cover"
+          />
+        )}
         <h1 className="text-2xl font-semibold text-foreground">
           {fitnessClass.title}
         </h1>
@@ -68,6 +75,12 @@ export function ClassDetailView({ classId }: { classId: number }) {
         <p className="mt-1 text-muted">
           {formatDateTime(fitnessClass.classDateTime)}
         </p>
+
+        {fitnessClass.description && (
+          <p className="mt-4 whitespace-pre-wrap text-sm text-muted">
+            {fitnessClass.description}
+          </p>
+        )}
 
         <p className="mt-6 text-3xl font-bold text-brand">
           <AnimatedNumber value={fitnessClass.currentCount} />
