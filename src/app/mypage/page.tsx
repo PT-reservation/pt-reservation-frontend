@@ -8,6 +8,7 @@ import {
 } from '@/hooks/useReservations';
 import { useMyTicket, useChargeTicket } from '@/hooks/useTicket';
 import { ApiError } from '@/lib/api';
+import { formatDateTime } from '@/lib/date';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { CenteredMessage } from '@/components/CenteredMessage';
@@ -94,7 +95,7 @@ export default function MyPage() {
                 <div>
                   <p className="text-foreground">{reservation.classTitle}</p>
                   <p className="text-sm text-muted">
-                    {new Date(reservation.reservedAt).toLocaleString('ko-KR')}
+                    {formatDateTime(reservation.reservedAt)}
                   </p>
                 </div>
 
