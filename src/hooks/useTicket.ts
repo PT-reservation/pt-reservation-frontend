@@ -4,12 +4,12 @@ import { SessionTicket } from '@/types/api';
 import { useCurrentUser } from '@/lib/auth-context';
 
 export function useMyTicket() {
-  const { isLoggedIn } = useCurrentUser();
+  const { isLoggedIn, role } = useCurrentUser();
 
   return useQuery({
     queryKey: ['myTicket'],
     queryFn: () => apiFetch<SessionTicket>('/members/me/ticket'),
-    enabled: isLoggedIn,
+    enabled: isLoggedIn && role === 'MEMBER',
     retry: false,
   });
 }
