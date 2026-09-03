@@ -1,3 +1,5 @@
+import { getToken } from './auth';
+
 export function compressImage(
   file: File,
   maxWidth = 1200,
@@ -44,8 +46,10 @@ export async function uploadImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', compressed);
 
+  const token = getToken();
   const response = await fetch('/api/upload', {
     method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     body: formData,
   });
 
